@@ -2,7 +2,7 @@
 
 **音频 + 自定义词库 → 整理后的文本。**
 
-将任意音频文件通过 STT 转录、LLM 润色，输出干净可用的文字。
+将任意音频文件通过 STT 转录、LLM 润色，输出干净可用的文字。从 [OpenTypeless](https://github.com/tover0314-w/opentypeless) 桌面应用提取的核心 pipeline，封装成独立的 Node.js SDK。
 
 **English** | [中文](#中文文档)
 
