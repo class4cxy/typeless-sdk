@@ -9,6 +9,27 @@
 
 export type AppType = "email" | "chat" | "code" | "document" | "general";
 
+/**
+ * A vocabulary entry with an optional list of phonetic aliases.
+ *
+ * Use `soundsLike` to list the approximate spellings that the STT engine may
+ * produce for this term. The LLM will replace any matching alias in the
+ * transcript with the canonical `term`.
+ *
+ * @example
+ * { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] }
+ * { term: 'Tauri',        soundsLike: ['towery', 'tori'] }
+ */
+export interface VocabularyEntry {
+  /** The exact term as it must appear in the output */
+  term: string;
+  /**
+   * Phonetic approximations or alternate spellings the STT engine may produce.
+   * The LLM will treat any of these as a match and replace with `term`.
+   */
+  soundsLike?: string[];
+}
+
 const BASE_PROMPT = `You are a voice-to-text assistant. Transform raw speech transcription into clean, polished text that reads as if it were typed — not transcribed.
 
 Rules:
@@ -76,8 +97,19 @@ const LANG_NAMES: Record<string, string> = {
 export interface BuildPromptOptions {
   /** Context type — affects tone and formatting style. Default: 'general' */
   appType?: AppType;
-  /** Custom vocabulary terms that must be spelled exactly as given */
-  vocabulary?: string[];
+  /**
+   * Custom vocabulary terms the LLM must use with exact spelling.
+   * Accepts plain strings or `VocabularyEntry` objects with optional
+   * `soundsLike` aliases — phonetic approximations the STT may produce.
+   *
+   * @example
+   * vocabulary: [
+   *   { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] },
+   *   { term: 'Tauri', soundsLike: ['towery'] },
+   *   'KPI',
+   * ]
+   */
+  vocabulary?: (string | VocabularyEntry)[];
   /** Whether to translate the output. Requires targetLang. */
   translateEnabled?: boolean;
   /** BCP-47 language code for translation target (e.g. 'en', 'zh', 'ja') */
@@ -118,10 +150,18 @@ export function buildSystemPrompt(options: BuildPromptOptions = {}): string {
   }
 
   if (vocabulary.length > 0) {
-    prompt +=
-      "\n\nIMPORTANT: The following are the user's custom terms. Always use these exact spellings:";
-    for (const word of vocabulary) {
-      prompt += `\n- "${word}"`;
+    prompt += `\n\nVOCABULARY CORRECTION (highest priority — applies before all other rules):
+The transcript may contain phonetic approximations or misspellings of technical terms. Scan the entire transcript and replace any word or phrase that matches — exactly or phonetically — one of the terms below with the canonical spelling given. Do this even when the match is only approximate.`;
+    for (const entry of vocabulary) {
+      if (typeof entry === "string") {
+        prompt += `\n- "${entry}"`;
+      } else {
+        const aliases =
+          entry.soundsLike && entry.soundsLike.length > 0
+            ? ` (transcript may show: ${entry.soundsLike.map((s) => `"${s}"`).join(", ")})`
+            : "";
+        prompt += `\n- "${entry.term}"${aliases}`;
+      }
     }
   }
 

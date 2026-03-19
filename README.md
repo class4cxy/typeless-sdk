@@ -140,7 +140,7 @@ Full pipeline: audio → transcript → polished text.
 const { transcript, polishedText } = await sdk.process(
   'recording.m4a',          // string path or Buffer / Uint8Array
   {
-    vocabulary?: string[],   // custom terms (exact spelling enforced)
+    vocabulary?: (string | VocabularyEntry)[],  // custom terms; use VocabularyEntry for soundsLike aliases
     language?: string,       // BCP-47 hint for STT ('zh', 'en', …)
     appType?: AppType,       // 'general' | 'email' | 'chat' | 'document' | 'code'
     translateEnabled?: boolean,
@@ -365,13 +365,27 @@ const sdk = new VoiceTextSDK({
 
 ### Custom vocabulary (domain-specific terms)
 
+Plain strings work for terms the STT usually gets right:
+
 ```typescript
 const { polishedText } = await sdk.process('standup.m4a', {
+  vocabulary: ['gRPC', 'KPI', '季报'],
+  appType: 'document',
+});
+```
+
+For terms the STT frequently mis-transcribes, add `soundsLike` aliases.
+The LLM will match the phonetic approximation and correct it to the exact spelling:
+
+```typescript
+import type { VocabularyEntry } from 'typeless-sdk';
+
+const { polishedText } = await sdk.process('standup.m4a', {
   vocabulary: [
-    'OpenTypeless',   // product name, must not be broken up
-    'Tauri',          // framework name
-    'gRPC',           // acronym with specific casing
-    '季报',           // Chinese domain term
+    { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] },
+    { term: 'Tauri',        soundsLike: ['towery', 'tori'] },
+    { term: 'gRPC',         soundsLike: ['grpc', 'g rpc'] },
+    'KPI',   // plain string — no alias needed
   ],
   appType: 'document',
 });

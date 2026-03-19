@@ -33,7 +33,7 @@
 
 // Re-export everything for consumers who want fine-grained control
 export { buildSystemPrompt } from "./prompt";
-export type { AppType, BuildPromptOptions } from "./prompt";
+export type { AppType, BuildPromptOptions, VocabularyEntry } from "./prompt";
 
 export { transcribeAudio } from "./stt";
 export type { SttConfig, SttAdapter } from "./stt";
@@ -47,7 +47,7 @@ export type { LlmConfig, PolishOptions } from "./llm";
 
 import { transcribeAudio, type SttConfig, type SttAdapter } from "./stt";
 import { polishText, type LlmConfig, type PolishOptions } from "./llm";
-import type { AppType } from "./prompt";
+import type { AppType, VocabularyEntry } from "./prompt";
 
 export interface SDKConfig {
   /**
@@ -77,8 +77,19 @@ export interface ProcessOptions {
   /**
    * Custom vocabulary / dictionary terms.
    * The LLM will always use these exact spellings in the output.
+   *
+   * For terms that STT frequently mis-transcribes, use `VocabularyEntry` with
+   * `soundsLike` to provide phonetic aliases — the LLM will match and correct
+   * them even when the transcript spelling differs.
+   *
+   * @example
+   * vocabulary: [
+   *   { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] },
+   *   { term: 'Tauri', soundsLike: ['towery', 'tori'] },
+   *   'KPI',
+   * ]
    */
-  vocabulary?: string[];
+  vocabulary?: (string | VocabularyEntry)[];
   /**
    * BCP-47 language code hint for STT (e.g. 'zh', 'en').
    * Overrides the language in `stt` config for this call.
