@@ -13,7 +13,7 @@
     "openai",
     "typescript"
   ],
-  "author": "OpenTypeless Contributors",
+  "author": "jdo",
   "license": "MIT",
   "repository": {
     "type": "git",

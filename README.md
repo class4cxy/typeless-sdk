@@ -2,7 +2,7 @@
 
 **音频 + 自定义词库 → 整理后的文本。**
 
-将任意音频文件通过 STT 转录、LLM 润色，输出干净可用的文字。从 [OpenTypeless](https://github.com/tover0314-w/opentypeless) 桌面应用的核心 pipeline 提取，无桌面依赖，零运行时第三方包。
+将任意音频文件通过 STT 转录、LLM 润色，输出干净可用的文字。
 
 **English** | [中文](#中文文档)
 
@@ -84,7 +84,7 @@ const sdk = new VoiceTextSDK({
 });
 
 const { transcript, polishedText } = await sdk.process('meeting.m4a', {
-  vocabulary: ['OpenTypeless', 'KPI', 'EBITDA'],
+  vocabulary: ['KPI', 'EBITDA'],
   language: 'zh',
   appType: 'document',
 });
@@ -382,7 +382,6 @@ import type { VocabularyEntry } from 'typeless-sdk';
 
 const { polishedText } = await sdk.process('standup.m4a', {
   vocabulary: [
-    { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] },
     { term: 'Tauri',        soundsLike: ['towery', 'tori'] },
     { term: 'gRPC',         soundsLike: ['grpc', 'g rpc'] },
     'KPI',   // plain string — no alias needed
@@ -435,9 +434,6 @@ typeless-sdk/
 ## 中文文档
 
 ### 简介
-
-从 [OpenTypeless](https://github.com/tover0314-w/opentypeless) 桌面应用提取的核心 pipeline，封装成独立的 Node.js SDK。
-
 **核心能力：音频 + 自定义词库 → 整理后的文本**
 
 ```
@@ -477,7 +473,7 @@ const sdk = new VoiceTextSDK({
 });
 
 const { transcript, polishedText } = await sdk.process('会议录音.m4a', {
-  vocabulary: ['季报', 'Q4', 'KPI', 'OpenTypeless'],  // 自定义词库
+  vocabulary: ['季报', 'Q4', 'KPI'],  // 自定义词库
   language: 'zh',
   appType: 'document',
 });
@@ -619,7 +615,3 @@ const { transcript } = await sdk.process('audio.mp3', { polish: false });
 | 翻译 | 润色完成后整体翻译 |
 
 ---
-
-## License
-
-MIT — Part of the [OpenTypeless](https://github.com/tover0314-w/opentypeless) project.

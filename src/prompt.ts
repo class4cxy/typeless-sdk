@@ -17,7 +17,6 @@ export type AppType = "email" | "chat" | "code" | "document" | "general";
  * transcript with the canonical `term`.
  *
  * @example
- * { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] }
  * { term: 'Tauri',        soundsLike: ['towery', 'tori'] }
  */
 export interface VocabularyEntry {
@@ -104,7 +103,6 @@ export interface BuildPromptOptions {
    *
    * @example
    * vocabulary: [
-   *   { term: 'OpenTypeless', soundsLike: ['open type less', 'opentypeless'] },
    *   { term: 'Tauri', soundsLike: ['towery'] },
    *   'KPI',
    * ]
@@ -122,7 +120,7 @@ export interface BuildPromptOptions {
  * @example
  * const prompt = buildSystemPrompt({
  *   appType: 'chat',
- *   vocabulary: ['OpenTypeless', 'Tauri'],
+ *   vocabulary: ['Tauri'],
  *   translateEnabled: true,
  *   targetLang: 'en',
  * });

@@ -156,7 +156,7 @@ async function parseStreamingResponse(
  *   apiKey: process.env.OPENAI_API_KEY!,
  *   model: 'gpt-4o-mini',
  * }, {
- *   vocabulary: ['OpenTypeless', 'Tauri'],
+ *   vocabulary: ['Tauri'],
  *   appType: 'chat',
  * });
  *
