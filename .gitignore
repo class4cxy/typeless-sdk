@@ -1,0 +1,42 @@
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.pnpm
+.pnpm-store/
+
+# Misc
+.DS_Store
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local env files
+.env
+.env.test
+
+.vscode/
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+
+# Cursor
+.cursor/*
+!.cursor/agents/
+!.cursor/rules/
+.cursor/rules/superpowers*.mdc
+.cursor/rules/code-quality-gate.mdc
+.cursor/rules/sonarqube-rules.mdc
+!.cursor/commands/
+!.cursor/skills/
+.cursor/plans/
+cursor_chat_history.csv

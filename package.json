@@ -1,0 +1,53 @@
+{
+  "name": "typeless-sdk",
+  "version": "0.1.0",
+  "description": "Node.js SDK: audio + custom vocabulary → polished text (STT + LLM)",
+  "keywords": [
+    "speech-to-text",
+    "stt",
+    "whisper",
+    "llm",
+    "transcription",
+    "audio",
+    "voice",
+    "openai",
+    "typescript"
+  ],
+  "author": "OpenTypeless Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tover0314-w/typeless-sdk.git"
+  },
+  "homepage": "https://github.com/tover0314-w/typeless-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/tover0314-w/typeless-sdk/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
