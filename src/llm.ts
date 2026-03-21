@@ -42,7 +42,12 @@ export interface LlmConfig {
   model: string;
   /** Maximum tokens to generate. Default: 4096 */
   maxTokens?: number;
-  /** Sampling temperature (0–2). Default: 0.3 */
+  /**
+   * Sampling temperature (0–2). Default: 0.1
+   *
+   * Kept low by default because polishing is a deterministic cleanup task —
+   * the model should not "create" content, only reformat what was spoken.
+   */
   temperature?: number;
   /** Request timeout in milliseconds. Default: 60_000 */
   timeoutMs?: number;
@@ -190,7 +195,7 @@ export async function polishText(
     model: config.model,
     messages,
     max_tokens: maxTokens,
-    temperature: config.temperature ?? 0.3,
+    temperature: config.temperature ?? 0.1,
     stream: isStreaming,
   };
 
